@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/myAccountFragment">
+
+    <fragment
+        android:id="@+id/myAccountFragment"
+        android:name="com.example.booknet.MyAccountFragment"
+        android:label="fragment_my_account"
+        tools:layout="@layout/fragment_my_account" >
+        <action
+            android:id="@+id/action_myAccountFragment_to_publishPostFragment"
+            app:destination="@id/publishPostFragment" />
+        <action
+            android:id="@+id/action_myAccountFragment_to_postCollectionFragment"
+            app:destination="@id/postCollectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postCollectionFragment"
+        android:name="com.example.booknet.PostCollectionFragment"
+        android:label="PostCollectionFragment"
+        tools:layout="@layout/fragment_post_collection" >
+        <action
+            android:id="@+id/action_postCollectionFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.booknet.EditFragment"
+        android:label="EditFragment"
+        tools:layout="@layout/fragment_edit" />
+    <fragment
+        android:id="@+id/publishPostFragment"
+        android:name="com.example.booknet.PublishPostFragment"
+        android:label="PublishPostFragment"
+        tools:layout="@layout/fragment_publish_post" >
+        <action
+            android:id="@+id/action_publishPostFragment_to_goGlobalFragment"
+            app:destination="@id/goGlobalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/goGlobalFragment"
+        android:name="com.example.booknet.GoGlobalFragment"
+        android:label="fragment_go_global"
+        tools:layout="@layout/fragment_go_global" >
+        <action
+            android:id="@+id/action_goGlobalFragment_to_postCollectionFragment"
+            app:destination="@id/postCollectionFragment" />
+        <action
+            android:id="@+id/action_goGlobalFragment_to_publishPostFragment"
+            app:destination="@id/publishPostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.booknet.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_myAccountFragment"
+            app:destination="@id/myAccountFragment" />
+    </fragment>
+</navigation>

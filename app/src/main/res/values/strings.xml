@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BookNet</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">BOOKNET</string>
+
+    <string name="menu_my_account">My Account</string>
+    <string name="menu_go_global">Go Global</string>
+    <string name="menu_settings">Settings</string>
+</resources>
