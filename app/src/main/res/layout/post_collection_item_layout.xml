@@ -26,16 +26,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
-obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam
-nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,
-tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit,
-quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos
-sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam
-recusandae alias error maxim adipisci amet."
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,23 +48,24 @@ recusandae alias error maxim adipisci amet."
             app:layout_constraintVertical_bias="1.0" />
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="69dp"
+            android:id="@+id/edit"
+            android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:text="Edit"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.413"
             app:layout_constraintStart_toEndOf="@+id/username"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button3"
-            android:layout_width="95dp"
+            android:id="@+id/delete"
+            android:layout_width="105dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:text="Delete"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/button2"
+            app:layout_constraintStart_toEndOf="@+id/edit"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

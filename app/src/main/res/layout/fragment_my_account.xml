@@ -33,30 +33,31 @@
         app:layout_constraintVertical_bias="0.135" />
 
     <Button
-        android:id="@+id/publish"
+        android:id="@+id/published_posts"
         android:layout_width="320dp"
         android:layout_height="60dp"
         android:text="PUBLISHED POSTS"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"
-        app:layout_constraintVertical_bias="0.135" />
+        app:layout_constraintVertical_bias="0.139" />
 
     <Button
         android:id="@+id/write"
         android:layout_width="320dp"
         android:layout_height="60dp"
+        android:layout_marginBottom="190dp"
         android:text="WRITE SOMETHING"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/publish"
-        app:layout_constraintVertical_bias="0.205" />
+        app:layout_constraintTop_toBottomOf="@+id/published_posts"
+        app:layout_constraintVertical_bias="0.965" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

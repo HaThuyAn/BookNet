@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_my_account">
+
+    <fragment
+        android:id="@+id/nav_my_account"
+        android:name="com.example.booknet.MyAccountFragment"
+        android:label="@string/menu_my_account"
+        tools:layout="@layout/fragment_my_account" >
+        <action
+            android:id="@+id/action_nav_my_account_to_postCollectionFragment"
+            app:destination="@id/postCollectionFragment" />
+        <action
+            android:id="@+id/action_nav_my_account_to_publishPostFragment"
+            app:destination="@id/publishPostFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_go_global"
+        android:name="com.example.booknet.GoGlobalFragment"
+        android:label="@string/menu_go_global"
+        tools:layout="@layout/fragment_go_global" >
+        <action
+            android:id="@+id/action_nav_go_global_to_postCollectionFragment"
+            app:destination="@id/postCollectionFragment" />
+        <action
+            android:id="@+id/action_nav_go_global_to_publishPostFragment"
+            app:destination="@id/publishPostFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.booknet.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/postCollectionFragment"
+        android:name="com.example.booknet.PostCollectionFragment"
+        android:label="Posts Collection"
+        tools:layout="@layout/fragment_post_collection" >
+        <action
+            android:id="@+id/action_postCollectionFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.booknet.RegisterFragment"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_nav_my_account"
+            app:destination="@id/nav_my_account" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.booknet.EditFragment"
+        android:label="Edit"
+        tools:layout="@layout/fragment_edit" >
+        <action
+            android:id="@+id/action_editFragment_to_postCollectionFragment"
+            app:destination="@id/postCollectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/publishPostFragment"
+        android:name="com.example.booknet.PublishPostFragment"
+        android:label="Publish Post"
+        tools:layout="@layout/fragment_publish_post" >
+        <action
+            android:id="@+id/action_publishPostFragment_to_nav_go_global"
+            app:destination="@id/nav_go_global" />
+    </fragment>
+</navigation>
