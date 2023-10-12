@@ -1,19 +1,24 @@
 package com.example.booknet
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 
 interface OnButtonClickListener {
     fun onEditClick(position: Int)
     fun onDeleteClick(position: Int)
 }
 
-class PostCollectionAdapter(private var buttonClickListener: OnButtonClickListener? = null) : RecyclerView.Adapter<PostCollectionAdapter.ViewHolder>() {
+class PostCollectionAdapter(private var buttonClickListener: OnButtonClickListener? = null, private val imageURLViewModel: ImageURLViewModel, private val authorId: String, private val userIdViewModel: UserIdViewModel) : ListAdapter<Post, PostCollectionAdapter.ViewHolder>(PostDiff) {
+
     fun setOnButtonClickListener(listener: OnButtonClickListener) {
         this.buttonClickListener = listener
     }
@@ -25,10 +30,8 @@ class PostCollectionAdapter(private var buttonClickListener: OnButtonClickListen
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = PostData.count
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = PostData.posts.get(position)
+        val item = getItem(position)
         holder.bind(item)
     }
 
@@ -42,12 +45,22 @@ class PostCollectionAdapter(private var buttonClickListener: OnButtonClickListen
         fun bind(item: Post) {
             author.text = item.author
             content.text = item.content
-            image.setImageResource(item.imageResourceId)
-            edit.setOnClickListener {
-                buttonClickListener?.onEditClick(adapterPosition)
+            imageURLViewModel.imageUrl(item.postId) { url ->
+                if (!url.isNullOrEmpty()) {
+                    Picasso.get().load(url).into(image)
+                }
             }
-            delete.setOnClickListener {
-                buttonClickListener?.onDeleteClick(adapterPosition)
+            Log.d("AuthorId", authorId)
+            if (userIdViewModel.retrieveUserId(v.context) == authorId) {
+                edit.setOnClickListener {
+                    buttonClickListener?.onEditClick(adapterPosition)
+                }
+                delete.setOnClickListener {
+                    buttonClickListener?.onDeleteClick(adapterPosition)
+                }
+            } else {
+                edit.visibility = View.GONE
+                delete.visibility = View.GONE
             }
         }
     }

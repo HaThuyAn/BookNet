@@ -25,7 +25,11 @@
         tools:layout="@layout/fragment_go_global" >
         <action
             android:id="@+id/action_nav_go_global_to_postCollectionFragment"
-            app:destination="@id/postCollectionFragment" />
+            app:destination="@id/postCollectionFragment">
+            <argument
+                android:name="authorId"
+                app:argType="string" />
+        </action>
         <action
             android:id="@+id/action_nav_go_global_to_publishPostFragment"
             app:destination="@id/publishPostFragment" />
@@ -45,6 +49,10 @@
         <action
             android:id="@+id/action_postCollectionFragment_to_editFragment"
             app:destination="@id/editFragment" />
+        <argument
+            android:name="authorId"
+            app:argType="string"
+            />
     </fragment>
 
     <fragment

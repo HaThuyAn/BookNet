@@ -1,17 +1,25 @@
 package com.example.booknet
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 
 interface OnUserNameClickListener {
-    fun onUsernameClick(position: Int)
+    fun onUsernameClick(position: Int, post: Post)
 }
 
-class GoGlobalAdapter(private var usernameClickListener: OnUserNameClickListener? = null) : RecyclerView.Adapter<GoGlobalAdapter.ViewHolder>() {
+class GoGlobalAdapter(private var usernameClickListener: OnUserNameClickListener? = null, private val viewModel: ImageURLViewModel) : ListAdapter<Post, GoGlobalAdapter.ViewHolder>(PostDiff) {
+    private lateinit var database: DatabaseReference
+    private lateinit var storage: StorageReference
+
     fun setOnUsernameClickListener(listener: OnUserNameClickListener) {
         this.usernameClickListener = listener
     }
@@ -23,10 +31,8 @@ class GoGlobalAdapter(private var usernameClickListener: OnUserNameClickListener
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = PostData.count
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = PostData.posts.get(position)
+        val item = getItem(position)
         holder.bind(item)
     }
 
@@ -38,9 +44,13 @@ class GoGlobalAdapter(private var usernameClickListener: OnUserNameClickListener
         fun bind(item: Post) {
             author.text = item.author
             content.text = item.content
-            image.setImageResource(item.imageResourceId)
+            viewModel.imageUrl(item.postId) { url ->
+                if (!url.isNullOrEmpty()) {
+                    Picasso.get().load(url).into(image)
+                }
+            }
             author.setOnClickListener {
-                usernameClickListener?.onUsernameClick(adapterPosition)
+                usernameClickListener?.onUsernameClick(adapterPosition, item)
             }
         }
     }

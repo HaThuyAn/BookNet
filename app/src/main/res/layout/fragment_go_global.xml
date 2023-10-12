@@ -7,7 +7,7 @@
     tools:context=".GoGlobalFragment">
 
     <Button
-        android:id="@+id/go_global"
+        android:id="@+id/publish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
