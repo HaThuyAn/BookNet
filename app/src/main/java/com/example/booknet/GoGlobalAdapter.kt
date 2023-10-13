@@ -8,8 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 
 interface OnUserNameClickListener {
@@ -17,8 +15,6 @@ interface OnUserNameClickListener {
 }
 
 class GoGlobalAdapter(private var usernameClickListener: OnUserNameClickListener? = null, private val viewModel: ImageURLViewModel) : ListAdapter<Post, GoGlobalAdapter.ViewHolder>(PostDiff) {
-    private lateinit var database: DatabaseReference
-    private lateinit var storage: StorageReference
 
     fun setOnUsernameClickListener(listener: OnUserNameClickListener) {
         this.usernameClickListener = listener

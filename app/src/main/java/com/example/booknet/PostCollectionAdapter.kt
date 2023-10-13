@@ -50,7 +50,6 @@ class PostCollectionAdapter(private var buttonClickListener: OnButtonClickListen
                     Picasso.get().load(url).into(image)
                 }
             }
-            Log.d("AuthorId", authorId)
             if (userIdViewModel.retrieveUserId(v.context) == authorId) {
                 edit.setOnClickListener {
                     buttonClickListener?.onEditClick(adapterPosition)

@@ -5,8 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,12 +18,15 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class PostCollectionFragment : Fragment(), OnButtonClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var postCollectionAdapter: PostCollectionAdapter
 
     private lateinit var database: DatabaseReference
+    private lateinit var storageRef: StorageReference
 
     private val imageURLViewModel: ImageURLViewModel by viewModels()
     private val userIdViewModel: UserIdViewModel by viewModels()
@@ -58,11 +64,33 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
     }
 
     override fun onEditClick(position: Int) {
-        findNavController().navigate(R.id.action_postCollectionFragment_to_editFragment)
+        val action = PostCollectionFragmentDirections.actionPostCollectionFragmentToEditFragment(
+            PostData.posts[position].postId,
+            PostData.posts[position].content,
+            PostData.posts[position].imageUrl
+        )
+        findNavController().navigate(action)
     }
 
     override fun onDeleteClick(position: Int) {
-        // TODO: Implement deletion logic
+        database = FirebaseDatabase.getInstance().getReference("Posts")
+        storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(PostData.posts[position].imageUrl)
+        val ref = database.child(PostData.posts[position].postId)
+        ref.removeValue()
+            .addOnSuccessListener {
+                retrievePosts(authorId)
+                storageRef.delete()
+                    .addOnSuccessListener {
+
+                    }
+                    .addOnFailureListener {
+
+                    }
+                Log.d("FirebaseDB", "Post successfully deleted!")
+            }
+            .addOnFailureListener { e ->
+                Log.w("FirebaseDB", "Deletion failed: ${e.message}")
+            }
     }
 
     private fun retrievePosts(authorId: String) {
@@ -80,7 +108,6 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
                 PostData.posts.clear()
                 PostData.posts.addAll(tempPosts)
 
-                // Update the adapter with the new data
                 postCollectionAdapter.submitList(PostData.posts)
             }
 
@@ -89,5 +116,15 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
                 println("Database error: ${error.message}")
             }
         })
+    }
+
+    private fun removePost(postId: String) {
+        val postToRemove = PostData.posts.find { it.postId == postId }
+        if (postToRemove != null) {
+            PostData.posts.remove(postToRemove)
+        } else {
+            // Post with the specified ID was not found
+            Log.d("RemovePost", "Post not found for ID: $postId")
+        }
     }
 }

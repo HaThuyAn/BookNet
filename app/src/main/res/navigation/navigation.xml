@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_my_account" >
         <action
             android:id="@+id/action_nav_my_account_to_postCollectionFragment"
-            app:destination="@id/postCollectionFragment" />
+            app:destination="@id/postCollectionFragment">
+            <argument
+                android:name="authorId"
+                app:argType="string" />
+        </action>
         <action
             android:id="@+id/action_nav_my_account_to_publishPostFragment"
             app:destination="@id/publishPostFragment" />
@@ -48,11 +52,20 @@
         tools:layout="@layout/fragment_post_collection" >
         <action
             android:id="@+id/action_postCollectionFragment_to_editFragment"
-            app:destination="@id/editFragment" />
-        <argument
-            android:name="authorId"
-            app:argType="string"
-            />
+            app:destination="@id/editFragment" >
+            <argument
+                android:name="postId"
+                app:argType="string" >
+            </argument>
+            <argument
+                android:name="content"
+                app:argType="string" >
+            </argument>
+            <argument
+                android:name="imageURL"
+                app:argType="string" >
+            </argument>
+        </action>
     </fragment>
 
     <fragment
@@ -72,6 +85,18 @@
         <action
             android:id="@+id/action_editFragment_to_postCollectionFragment"
             app:destination="@id/postCollectionFragment" />
+        <argument
+            android:name="postId"
+            app:argType="string" >
+        </argument>
+        <argument
+            android:name="content"
+            app:argType="string" >
+        </argument>
+        <argument
+            android:name="imageURL"
+            app:argType="string" >
+        </argument>
     </fragment>
 
     <fragment
