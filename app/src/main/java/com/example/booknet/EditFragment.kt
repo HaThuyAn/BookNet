@@ -64,21 +64,21 @@ class EditFragment : Fragment() {
                             .addOnSuccessListener { uri ->
                                 imageUrl = uri.toString()
                                 updateData(postId, contentTextInput.text.toString(), imageUrl)
+
+                                storage = FirebaseStorage.getInstance().getReferenceFromUrl(imageURL)
+                                storage.delete()
+                                    .addOnSuccessListener {
+
+                                    }
+                                    .addOnFailureListener {
+
+                                    }
                             }
                     }
                     .addOnFailureListener {
 
                     }
-                storage = FirebaseStorage.getInstance().getReferenceFromUrl(imageURL)
-                storage.delete()
-                    .addOnSuccessListener {
-
-                    }
-                    .addOnFailureListener {
-
-                    }
             }
-            findNavController().navigate(R.id.action_editFragment_to_postCollectionFragment)
         }
 
         cancel = view.findViewById(R.id.cancel)
@@ -126,7 +126,7 @@ class EditFragment : Fragment() {
 
         database.child(postId).updateChildren(data)
             .addOnSuccessListener {
-
+                findNavController().navigateUp()
             }
             .addOnFailureListener {
 

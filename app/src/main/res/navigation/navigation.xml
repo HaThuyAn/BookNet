@@ -82,9 +82,9 @@
         android:name="com.example.booknet.EditFragment"
         android:label="Edit"
         tools:layout="@layout/fragment_edit" >
-        <action
+<!--        <action
             android:id="@+id/action_editFragment_to_postCollectionFragment"
-            app:destination="@id/postCollectionFragment" />
+            app:destination="@id/postCollectionFragment" />-->
         <argument
             android:name="postId"
             app:argType="string" >

@@ -45,8 +45,6 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
         postCollectionAdapter = PostCollectionAdapter(imageURLViewModel = imageURLViewModel, authorId = authorId, userIdViewModel = userIdViewModel)
         postCollectionAdapter.setOnButtonClickListener(this)
         recyclerView.adapter = postCollectionAdapter
-
-        Log.d("PostCollectionFragment", "onViewCreated is called")
     }
 
     override fun onCreateView(
@@ -59,7 +57,6 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        Log.d("PostCollectionFragment", "onCreateView is called")
         return view
     }
 
@@ -78,10 +75,9 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
         val ref = database.child(PostData.posts[position].postId)
         ref.removeValue()
             .addOnSuccessListener {
-                retrievePosts(authorId)
                 storageRef.delete()
                     .addOnSuccessListener {
-
+                        retrievePosts(authorId)
                     }
                     .addOnFailureListener {
 
@@ -116,15 +112,5 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
                 println("Database error: ${error.message}")
             }
         })
-    }
-
-    private fun removePost(postId: String) {
-        val postToRemove = PostData.posts.find { it.postId == postId }
-        if (postToRemove != null) {
-            PostData.posts.remove(postToRemove)
-        } else {
-            // Post with the specified ID was not found
-            Log.d("RemovePost", "Post not found for ID: $postId")
-        }
     }
 }
