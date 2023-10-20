@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ class PublishPostFragment : Fragment() {
     private lateinit var cancel: Button
     private lateinit var content: TextInputEditText
     private lateinit var image: ImageView
+    private lateinit var card: CardView
     private lateinit var imageUri: Uri
     private lateinit var database: DatabaseReference
     private lateinit var storage: StorageReference
@@ -49,40 +51,50 @@ class PublishPostFragment : Fragment() {
         publish = view.findViewById(R.id.publish)
         content = view.findViewById(R.id.content)
 
-        /*var imageSuccess = false
-        var contentSuccess = false*/
-
         var imageUrl = ""
+        imageUri = Uri.EMPTY
         publish.setOnClickListener {
-            database = FirebaseDatabase.getInstance().getReference("Posts")
-            val postId = UUID.randomUUID()
-            val fileName = UUID.randomUUID().toString() + ".jpg"
-            storage = FirebaseStorage.getInstance().getReference("images/$fileName")
-            storage.putFile(imageUri)
-                .addOnSuccessListener { uploadTask ->
-                    uploadTask.storage.downloadUrl
-                        .addOnSuccessListener { uri ->
-                            imageUrl = uri.toString()
-                            // Log.d("URL", imageUrl) // successfully retrieve the image
-                            val post = Post(postId.toString(), userId!!, username, content.text.toString(), imageUrl)
-                            database.child(postId.toString()).setValue(post)
-                                .addOnSuccessListener {
+            val enteredContent = content.text.toString().trim()
 
-                                    findNavController().navigate(R.id.action_publishPostFragment_to_nav_go_global)
-                                }
-                                .addOnFailureListener {
-
-                                    // Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
-                                }
-                        }
-                        .addOnFailureListener {  }
+            if (enteredContent.isNotEmpty() && imageUri != Uri.EMPTY) {
+                publish.isEnabled = false
+                cancel.isEnabled = false
+                content.isEnabled = false
+                card.isEnabled = false
+                database = FirebaseDatabase.getInstance().getReference("Posts")
+                val postId = UUID.randomUUID()
+                val fileName = UUID.randomUUID().toString() + ".jpg"
+                storage = FirebaseStorage.getInstance().getReference("images/$fileName")
+                storage.putFile(imageUri)
+                    .addOnSuccessListener { uploadTask ->
+                        uploadTask.storage.downloadUrl
+                            .addOnSuccessListener { uri ->
+                                imageUrl = uri.toString()
+                                val post = Post(postId.toString(), userId!!, username, content.text.toString(), imageUrl)
+                                database.child(postId.toString()).setValue(post)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(context, "Successfully published", Toast.LENGTH_SHORT).show()
+                                        findNavController().navigateUp()
+                                    }
+                                    .addOnFailureListener {
+                                        Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                                    }
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                if (enteredContent.isEmpty()) {
+                    Toast.makeText(context, "Please enter some text", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Please select an image", Toast.LENGTH_SHORT).show()
                 }
-                .addOnFailureListener {
+            }
 
-                }
-            /*if (imageSuccess && contentSuccess) {
-                findNavController().navigate(R.id.action_publishPostFragment_to_nav_go_global)
-            }*/
         }
 
         cancel = view.findViewById(R.id.cancel)
@@ -90,7 +102,7 @@ class PublishPostFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        val card: CardView = view.findViewById(R.id.card)
+        card = view.findViewById(R.id.card)
         card.setOnClickListener {
             image = view.findViewById(R.id.bookImage)
             uploadImage(image)

@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,6 +22,7 @@ import com.google.firebase.database.ValueEventListener
 class GoGlobalFragment : Fragment(), OnUserNameClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var publish: Button
+    private lateinit var progressBar: ProgressBar
     private lateinit var goGlobalAdapter: GoGlobalAdapter
 
     private lateinit var database: DatabaseReference
@@ -28,6 +31,8 @@ class GoGlobalFragment : Fragment(), OnUserNameClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        progressBar = view.findViewById(R.id.progressBar)
 
         retrieveAllPosts()
 
@@ -60,13 +65,15 @@ class GoGlobalFragment : Fragment(), OnUserNameClickListener {
 
     private fun retrieveAllPosts() {
         database = FirebaseDatabase.getInstance().getReference("Posts")
+
+        progressBar.visibility = View.VISIBLE
+
         database.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val tempPosts = ArrayList<Post>()
                 // Iterate through each child and retrieve the data
                 for (postSnapshot in snapshot.children) {
                     val post = postSnapshot.getValue(Post::class.java)
-                    // Handle the retrieved post (e.g., print it)
                     if (post != null) {
                         tempPosts.add(post)
                     }
@@ -76,11 +83,13 @@ class GoGlobalFragment : Fragment(), OnUserNameClickListener {
 
                 // Update the adapter with the new data
                 goGlobalAdapter.submitList(PostData.posts)
+
+                progressBar.visibility = View.GONE
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Handle any errors
-                println("Database error: ${error.message}")
+                Toast.makeText(context, "Error: $error", Toast.LENGTH_SHORT).show()
             }
         })
     }

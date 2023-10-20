@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,7 @@ class EditFragment : Fragment() {
     private lateinit var cancel: Button
     private lateinit var image: ImageView
     private lateinit var contentTextInput: TextInputEditText
+    private lateinit var card: CardView
     private lateinit var database: DatabaseReference
     private lateinit var storage: StorageReference
     private lateinit var imageUri: Uri
@@ -52,33 +54,45 @@ class EditFragment : Fragment() {
 
         save = view.findViewById(R.id.save)
         save.setOnClickListener {
-            if (!imageChanged) {
-                updateData(postId, contentTextInput.text.toString(), null)
+            val enteredContent = contentTextInput.text.toString().trim()
+
+            if (enteredContent.isNotEmpty()) {
+                save.isEnabled = false
+                cancel.isEnabled = false
+                contentTextInput.isEnabled = false
+                card.isEnabled = false
+                if (!imageChanged) {
+                    updateData(postId, contentTextInput.text.toString(), null)
+                } else {
+                    var imageUrl = ""
+                    val fileName = UUID.randomUUID().toString() + ".jpg"
+                    storage = FirebaseStorage.getInstance().getReference("images/$fileName")
+                    storage.putFile(imageUri)
+                        .addOnSuccessListener { uploadTask ->
+                            uploadTask.storage.downloadUrl
+                                .addOnSuccessListener { uri ->
+                                    imageUrl = uri.toString()
+                                    updateData(postId, contentTextInput.text.toString(), imageUrl)
+
+                                    storage =
+                                        FirebaseStorage.getInstance().getReferenceFromUrl(imageURL)
+                                    storage.delete()
+                                        .addOnSuccessListener {
+                                            Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
+                                        }
+                                        .addOnFailureListener {
+                                            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                                        }
+                                }
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                        }
+                }
             } else {
-                var imageUrl = ""
-                val fileName = UUID.randomUUID().toString() + ".jpg"
-                storage = FirebaseStorage.getInstance().getReference("images/$fileName")
-                storage.putFile(imageUri)
-                    .addOnSuccessListener { uploadTask ->
-                        uploadTask.storage.downloadUrl
-                            .addOnSuccessListener { uri ->
-                                imageUrl = uri.toString()
-                                updateData(postId, contentTextInput.text.toString(), imageUrl)
-
-                                storage = FirebaseStorage.getInstance().getReferenceFromUrl(imageURL)
-                                storage.delete()
-                                    .addOnSuccessListener {
-
-                                    }
-                                    .addOnFailureListener {
-
-                                    }
-                            }
-                    }
-                    .addOnFailureListener {
-
-                    }
+                Toast.makeText(context, "Please enter some text", Toast.LENGTH_SHORT).show()
             }
+
         }
 
         cancel = view.findViewById(R.id.cancel)
@@ -86,7 +100,7 @@ class EditFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        val card: CardView = view.findViewById(R.id.card)
+        card = view.findViewById(R.id.card)
         card.setOnClickListener {
             imageChanged = true
             image = view.findViewById(R.id.bookImage)
@@ -129,7 +143,7 @@ class EditFragment : Fragment() {
                 findNavController().navigateUp()
             }
             .addOnFailureListener {
-
+                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
             }
     }
 }

@@ -31,18 +31,23 @@ class RegisterFragment : Fragment() {
         register.setOnClickListener {
             database = FirebaseDatabase.getInstance().getReference("Users")
 
-            val userId = UUID.randomUUID()
-            viewModel.saveUserId(requireContext(), userId)
+            val enteredUsername = username.text.toString().trim() // Get the username and trim leading/trailing whitespace
 
-            val user = User(userId.toString(), username.text.toString())
-            database.child(userId.toString()).setValue(user)
-                .addOnSuccessListener {
-                //Toast.makeText(context, "Successfully registered", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_registerFragment_to_nav_my_account)
+            if (enteredUsername.isNotEmpty()) {
+                val userId = UUID.randomUUID()
+                viewModel.saveUserId(requireContext(), userId)
+
+                val user = User(userId.toString(), enteredUsername)
+                database.child(userId.toString()).setValue(user)
+                    .addOnSuccessListener {
+                        findNavController().navigate(R.id.action_registerFragment_to_nav_my_account)
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(context, "Please enter a username", Toast.LENGTH_SHORT).show()
             }
-                .addOnFailureListener {
-                    Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
-                }
         }
     }
     override fun onCreateView(

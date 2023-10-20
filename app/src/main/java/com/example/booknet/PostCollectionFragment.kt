@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,6 +23,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 class PostCollectionFragment : Fragment(), OnButtonClickListener {
+    private lateinit var progressBar: ProgressBar
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var postCollectionAdapter: PostCollectionAdapter
 
@@ -35,6 +38,8 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        progressBar = view.findViewById(R.id.progressBar)
 
         authorId = arguments?.getString("authorId") ?: ""
 
@@ -91,6 +96,7 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
 
     private fun retrievePosts(authorId: String) {
         database = FirebaseDatabase.getInstance().getReference("Posts")
+        progressBar.visibility = View.VISIBLE
         database.orderByChild("authorId").equalTo(authorId).addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val tempPosts = ArrayList<Post>()
@@ -104,7 +110,10 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
                 PostData.posts.clear()
                 PostData.posts.addAll(tempPosts)
 
-                postCollectionAdapter.submitList(PostData.posts)
+                recyclerView.post {
+                    postCollectionAdapter.submitList(PostData.posts.toList())
+                }
+                progressBar.visibility = View.GONE
             }
 
             override fun onCancelled(error: DatabaseError) {

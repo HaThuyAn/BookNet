@@ -82,9 +82,6 @@
         android:name="com.example.booknet.EditFragment"
         android:label="Edit"
         tools:layout="@layout/fragment_edit" >
-<!--        <action
-            android:id="@+id/action_editFragment_to_postCollectionFragment"
-            app:destination="@id/postCollectionFragment" />-->
         <argument
             android:name="postId"
             app:argType="string" >
@@ -104,8 +101,5 @@
         android:name="com.example.booknet.PublishPostFragment"
         android:label="Publish Post"
         tools:layout="@layout/fragment_publish_post" >
-        <action
-            android:id="@+id/action_publishPostFragment_to_nav_go_global"
-            app:destination="@id/nav_go_global" />
     </fragment>
 </navigation>
