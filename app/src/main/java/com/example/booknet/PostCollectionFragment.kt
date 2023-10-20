@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -85,12 +86,11 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
                         retrievePosts(authorId)
                     }
                     .addOnFailureListener {
-
+                        Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
                     }
-                Log.d("FirebaseDB", "Post successfully deleted!")
             }
-            .addOnFailureListener { e ->
-                Log.w("FirebaseDB", "Deletion failed: ${e.message}")
+            .addOnFailureListener {
+                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -110,15 +110,14 @@ class PostCollectionFragment : Fragment(), OnButtonClickListener {
                 PostData.posts.clear()
                 PostData.posts.addAll(tempPosts)
 
-                recyclerView.post {
-                    postCollectionAdapter.submitList(PostData.posts.toList())
-                }
+                postCollectionAdapter.submitList(PostData.posts.toList())
+
                 progressBar.visibility = View.GONE
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Handle any errors
-                println("Database error: ${error.message}")
+                Toast.makeText(context, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
