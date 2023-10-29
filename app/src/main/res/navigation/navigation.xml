@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_my_account">
+    app:startDestination="@+id/nav_go_global">
 
     <fragment
         android:id="@+id/nav_my_account"
@@ -48,7 +48,7 @@
     <fragment
         android:id="@+id/postCollectionFragment"
         android:name="com.example.booknet.PostCollectionFragment"
-        android:label="Posts Collection"
+        android:label="Post Collection"
         tools:layout="@layout/fragment_post_collection" >
         <action
             android:id="@+id/action_postCollectionFragment_to_editFragment"

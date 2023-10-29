@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         if (userId != null) {
             // User is logged in, navigate to My Account screen
-            navController.navigate(R.id.nav_my_account)
+            navController.navigate(R.id.nav_go_global)
         } else {
             // User is not logged in, navigate to Register screen
             navController.navigate(R.id.registerFragment)
