@@ -82,7 +82,7 @@ class GoGlobalFragment : Fragment(), OnUserNameClickListener {
                 PostData.posts.addAll(tempPosts)
 
                 // Update the adapter with the new data
-                goGlobalAdapter.submitList(PostData.posts)
+                goGlobalAdapter.submitList(PostData.posts.toList())
 
                 progressBar.visibility = View.GONE
             }
