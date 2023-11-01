@@ -40,7 +40,7 @@ class RegisterFragment : Fragment() {
                 val user = User(userId.toString(), enteredUsername)
                 database.child(userId.toString()).setValue(user)
                     .addOnSuccessListener {
-                        findNavController().navigate(R.id.action_registerFragment_to_nav_my_account)
+                        findNavController().navigate(R.id.action_registerFragment_to_nav_go_global)
                     }
                     .addOnFailureListener {
                         Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()

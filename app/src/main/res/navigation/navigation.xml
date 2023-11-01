@@ -73,8 +73,8 @@
         android:name="com.example.booknet.RegisterFragment"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment_to_nav_my_account"
-            app:destination="@id/nav_my_account" />
+            android:id="@+id/action_registerFragment_to_nav_go_global"
+            app:destination="@id/nav_go_global" />
     </fragment>
 
     <fragment
