@@ -78,15 +78,16 @@ class EditFragment : Fragment() {
                                         FirebaseStorage.getInstance().getReferenceFromUrl(imageURL)
                                     storage.delete()
                                         .addOnSuccessListener {
-                                            Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
+
                                         }
                                         .addOnFailureListener {
-                                            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+
                                         }
                                 }
                         }
                         .addOnFailureListener {
                             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                            findNavController().navigateUp()
                         }
                 }
             } else {
@@ -140,10 +141,12 @@ class EditFragment : Fragment() {
 
         database.child(postId).updateChildren(data)
             .addOnSuccessListener {
+                Toast.makeText(context, "Successfully updated", Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
             }
             .addOnFailureListener {
                 Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()
             }
     }
 }

@@ -77,14 +77,17 @@ class PublishPostFragment : Fragment() {
                                     }
                                     .addOnFailureListener {
                                         Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                                        findNavController().navigateUp()
                                     }
                             }
                             .addOnFailureListener {
                                 Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                                findNavController().navigateUp()
                             }
                     }
                     .addOnFailureListener {
                         Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                        findNavController().navigateUp()
                     }
             } else {
                 if (enteredContent.isEmpty()) {
